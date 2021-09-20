@@ -20,13 +20,63 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Método para logar o usuário login e senha.
+        Auth.auth().signIn(withEmail: "andre@gmail.com", password: "and1234") { usuario, erro in
+            
+            if erro == nil {//Sucesso
+                
+                print("Sucesso ao cadastrar o usuário!! \(erro?.localizedDescription)  ")
+                
+            }else{//Erro
+                
+                print("Erro ao cadastrar o usuário \(erro?.localizedDescription)  ")
+            }
+            
+            
+        }
         
-        let pontuacao = firebase.child("pontuacao").child("valor")
+        //Método para deslogar o usuário
+        do {
+            try Auth.auth().signOut()
+        } catch  {
+            print("Erro ao deslogar usuário")
+        }
+        
+        Auth.auth().addStateDidChangeListener { Auth, usuario in
+         
+            if let usuarioLogado = usuario {
+                
+                print("Usuário logado, email: " + String(describing: usuarioLogado.email) )
+            }else{
+                
+                print("Usuário não está logado !")
+            }
+        
+        }
+         
+        //let pontuacao = firebase.child("pontuacao").child("valor")
         
         //pontuacao.removeValue()
         
         //pontuacao.child("valor").setValue("100")
         
+        /*
+        //Criando usuário no firebase com autenticação de login e senha.
+        Auth.auth().createUser(withEmail: "andre@gmail.com", password: "and1234") { usuario, erro in
+            
+            if erro == nil {//Sucesso
+                
+                print("Sucesso ao cadastrar o usuário!! \(erro?.localizedDescription)  ")
+                
+            }else{//Erro
+                
+                print("Erro ao cadastrar o usuário \(erro?.localizedDescription)  ")
+            }
+            
+            
+        }
+        */
+        /*
         //recuperar dados do firebase
         pontuacao.observe(DataEventType.value) { dados in
             //print para testar se o observe está atualizando.
@@ -36,9 +86,9 @@ class ViewController: UIViewController {
             self.textoLabel.text = ponto
             
         }
-        
+         */
     }
-
+    
 
 }
 
